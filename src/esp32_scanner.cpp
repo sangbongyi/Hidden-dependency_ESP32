@@ -1,8 +1,5 @@
 #include <Arduino.h>
 
-//ADD Comment here
-//ADD Second comment
-
 // I2c Header
 #include <Wire.h>
 
