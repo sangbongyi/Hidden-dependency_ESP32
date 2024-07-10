@@ -9,6 +9,8 @@
 #include <BLEScan.h>
 #include <BLEAdvertisedDevice.h>
 
+// Store known BLE devices (e.g. My phone, BLE ear buds, etc)
+// Remove all the addreses when the device is initially installed in the exhibition place
 String knownBLEAddresses[] = { "aa:bc:cc:dd:ee:ee", "54:2c:7b:87:71:a2", "72:09:b9:28:37:6c", "6c:9a:00:3a:65:47", "66:f4:d1:6c:fc:b2",
                                "5a:2b:f4:61:71:aa", "f2:dc:7e:bd:f1:ab", "49:36:ef:f5:9f:0c", "4f:08:07:83:c3:62", "5b:51:f2:1d:66:4d",
                                "53:11:d2:bf:fd:04", "74:be:f6:a4:81:2f", "d7:42:99:28:27:63" };
@@ -22,23 +24,25 @@ int SCAN_INTERVAL_WINDOW = 24;      // Scanning interval time(window) -> 24 // L
 int RSSI_TH_COUNT = 0;              // Number of devices inside of the threshold radius
 int RSSI_TH_COUNT_FOOTSTEP = 0;     // Number of devices inside of the threshold radius (Close to the center)
 
+int scanTime = 5;   // Scanning duration time 5ms
+BLEScan* pBLEScan;  // BLE scan objects (Array)
+
+//********** Device detection flags **********//
 bool RSSI_TH_FLAG = false;
 bool RSSI_TH_FOOTSTEP_FLAG = false;
 
-//********** New flags **********//
-bool DEVICE_PRESENCE = false;
-bool DEVICE_SMALL_NUM = false;  // More than 1 Devies in the area -> True
-bool DEVICE_LARGE_NUM = false;  // More than 5 Devies in the area -> True
+bool DEVICE_PRESENCE = false;   // True -> More than 1 device in the area
+bool DEVICE_SMALL_NUM = false;  // True -> More than 5 addresses and less than 15 addresses in the area
+bool DEVICE_LARGE_NUM = false;  // True -> More than 16 addresses in the area
 
-bool device_found;
-bool i2cDevices;
+bool known_device_found = false; // True -> Known devices are found
+
+//********** I2C Command variable **********//
 char message = 's';
 
+//********** LED Pins **********//
 int LED_GREEN = 18; // Green LED Control Pin (Devices are within RSSI_THRESHOLD range)
 int LED_RED = 5;    // Red LED Control Pin (Devices are within RSSI_THRESHOLD_FOOTSTEP range)
-
-int scanTime = 5;   // Scanning duration time 5ms
-BLEScan* pBLEScan;  // BLE scan objects (Array)
 
 //Call back function => it will be called once every few second. 
 //It checks if any new devices are available or not. => Set a flag if there is a new one
@@ -61,14 +65,14 @@ class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks {
     for (int i = 0; i < (sizeof(knownBLEAddresses) / sizeof(knownBLEAddresses[0])); i++) {
       printAllBLEDevices(advertisedDevice, i);
       if (strcmp(advertisedDevice.getAddress().toString().c_str(), knownBLEAddresses[i].c_str()) == 0) {
-        device_found = true;
+        known_device_found = true;
         break;
       } else {
-        device_found = false;
+        known_device_found = false;
       }
     }
     Serial.printf("Advertised Device: %s", advertisedDevice.toString().c_str());
-    Serial.printf(" Known Device Found Flag: %s \n", (String)device_found);
+    Serial.printf(" Known Device Found Flag: %s \n", (String)known_device_found);
   }
 };
 
@@ -95,7 +99,6 @@ void requestEvent() {
   // as expected by master
   Serial.println("Send MODE 2 signal" + message);
 }
-
 
 void setup() {
   // put your setup code here, to run once:
@@ -129,7 +132,7 @@ void loop() {
     //Serial.print(rssi);
 
     // Normal RSSI radius from the center
-    if (rssi > RSSI_THRESHOLD && device_found == false) {  //&& device_found == true
+    if (rssi > RSSI_THRESHOLD && known_device_found == false) {
 
       RSSI_TH_COUNT++;
       RSSI_TH_FLAG = true;
@@ -170,8 +173,8 @@ void loop() {
     DEVICE_LARGE_NUM = false;
     Serial.println("NO AUDIENCE!! ");
   }
-  //
 
+  //
   Serial.print("DEVICES IN RANGE : ");
   if (RSSI_TH_FLAG == 1) {
     Serial.print("TRUE  /");
@@ -189,7 +192,7 @@ void loop() {
 
   ledNotification();
 
-  // SET THE COMMAND MESSAGE
+  // SET THE COMMAND MESSAGE TO I2C COMM
   // Devices are detacted within the threshold radius
   if (DEVICE_PRESENCE == true) {  // && nDevices > 0
     if (DEVICE_SMALL_NUM == true) {
