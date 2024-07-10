@@ -9,7 +9,7 @@
 #include <BLEScan.h>
 #include <BLEAdvertisedDevice.h>
 
-// Store known BLE devices (e.g. My phone, BLE ear buds, etc)
+// Store known BLE devices (e.g. My phone, BLE earbuds, etc)
 // Remove all the addreses when the device is initially installed in the exhibition place
 String knownBLEAddresses[] = { "aa:bc:cc:dd:ee:ee", "54:2c:7b:87:71:a2", "72:09:b9:28:37:6c", "6c:9a:00:3a:65:47", "66:f4:d1:6c:fc:b2",
                                "5a:2b:f4:61:71:aa", "f2:dc:7e:bd:f1:ab", "49:36:ef:f5:9f:0c", "4f:08:07:83:c3:62", "5b:51:f2:1d:66:4d",
@@ -125,12 +125,13 @@ void loop() {
   BLEScanResults foundDevices = pBLEScan->start(scanTime, false);
   std::vector<std::string> stationaryBLEAddresses;
 
+  // ***** Device counting function ***** //
   for (int i = 0; i < foundDevices.getCount(); i++) {
     BLEAdvertisedDevice device = foundDevices.getDevice(i);
     int rssi = device.getRSSI();
     //Serial.print("RSSI: ");
     //Serial.print(rssi);
-
+    
     // Normal RSSI radius from the center
     if (rssi > RSSI_THRESHOLD && known_device_found == false) {
 
@@ -147,12 +148,13 @@ void loop() {
     Serial.printf("  Device Found Address: %s \n", stationaryBLEAddresses[i].c_str());
   }
 
+  // ***** Display the number of devices in the range of threshold function ***** //
   Serial.print("Number of BLE Devices (Green LED): ");
   Serial.print(RSSI_TH_COUNT);
   Serial.print("  Number of BLE Devices in close (Red LED): ");
   Serial.println(RSSI_TH_COUNT_FOOTSTEP);
 
-  //
+  // ***** Function to display whether the number of scanned machines is in a small or large range. ***** //
   if (RSSI_TH_COUNT > 0) {
     DEVICE_PRESENCE = true;
     Serial.print("POTENTIOAL AUDIENCE : ");
