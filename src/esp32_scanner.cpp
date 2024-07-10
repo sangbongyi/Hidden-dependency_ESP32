@@ -13,11 +13,11 @@ String knownBLEAddresses[] = { "aa:bc:cc:dd:ee:ee", "54:2c:7b:87:71:a2", "72:09:
                                "5a:2b:f4:61:71:aa", "f2:dc:7e:bd:f1:ab", "49:36:ef:f5:9f:0c", "4f:08:07:83:c3:62", "5b:51:f2:1d:66:4d",
                                "53:11:d2:bf:fd:04", "74:be:f6:a4:81:2f", "d7:42:99:28:27:63" };
 
-int RSSI_THRESHOLD = -80;           //Normal Bluetooth detection radius
-int RSSI_THRESHOLD_FOOTSTEP = -50;  //Footstep Bluetooth detection radius
+int RSSI_THRESHOLD = -80;           // Normal Bluetooth detection radius
+int RSSI_THRESHOLD_FOOTSTEP = -50;  // Footstep Bluetooth detection radius
 
-int SCAN_INTERVAL = 25;             //Scanning interval time 25
-int SCAN_INTERVAL_WINDOW = 24;      //Scanning interval time(window) 24 // Less or equal to scan interval time
+int SCAN_INTERVAL = 25;             // Scanning interval time -> 25
+int SCAN_INTERVAL_WINDOW = 24;      // Scanning interval time(window) -> 24 // Less or equal to scan interval time
 
 int RSSI_TH_COUNT = 0;              // Number of devices inside of the threshold radius
 int RSSI_TH_COUNT_FOOTSTEP = 0;     // Number of devices inside of the threshold radius (Close to the center)
@@ -34,24 +34,32 @@ bool device_found;
 bool i2cDevices;
 char message = 's';
 
-int LED_GREEN = 18;
-int LED_RED = 5;
+int LED_GREEN = 18; // Green LED Control Pin (Devices are within RSSI_THRESHOLD range)
+int LED_RED = 5;    // Red LED Control Pin (Devices are within RSSI_THRESHOLD_FOOTSTEP range)
 
-int scanTime = 5;
-BLEScan* pBLEScan;  //BLE scan objects (Array)
+int scanTime = 5;   // Scanning duration time 5ms
+BLEScan* pBLEScan;  // BLE scan objects (Array)
 
-//Call back function => it will be called once every few second. It checks if any new devices are available or not. => Set a flag if there is a new one
+//Call back function => it will be called once every few second. 
+//It checks if any new devices are available or not. => Set a flag if there is a new one
 class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks {
+  
+  // Print all addresses of the scanned BLE devices 
+  void printAllBLEDevices(BLEAdvertisedDevice _device, int _index) {
+      //Uncomment to Enable Debug Information
+      Serial.println("************* Start **************");
+      Serial.println(sizeof(knownBLEAddresses));
+      Serial.println(sizeof(knownBLEAddresses[0]));
+      Serial.println(sizeof(knownBLEAddresses)/sizeof(knownBLEAddresses[0]));
+      Serial.println(_device.getAddress().toString().c_str());
+      Serial.println(knownBLEAddresses[_index].c_str());
+      Serial.println("************* End **************");
+  }
+  
+  // Flag check if there are known BLE devices in the TH range
   void onResult(BLEAdvertisedDevice advertisedDevice) {
     for (int i = 0; i < (sizeof(knownBLEAddresses) / sizeof(knownBLEAddresses[0])); i++) {
-      //Uncomment to Enable Debug Information
-      //Serial.println("************* Start **************");
-      //Serial.println(sizeof(knownBLEAddresses));
-      //Serial.println(sizeof(knownBLEAddresses[0]));
-      //Serial.println(sizeof(knownBLEAddresses)/sizeof(knownBLEAddresses[0]));
-      //Serial.println(advertisedDevice.getAddress().toString().c_str());
-      //Serial.println(knownBLEAddresses[i].c_str());
-      //Serial.println("************* End **************");
+      printAllBLEDevices(advertisedDevice, i);
       if (strcmp(advertisedDevice.getAddress().toString().c_str(), knownBLEAddresses[i].c_str()) == 0) {
         device_found = true;
         break;
@@ -176,7 +184,7 @@ void loop() {
   } else {
     Serial.println("FALSE");
   }
-  //Serial.println();
+  Serial.println();
   Serial.println();
 
   ledNotification();
@@ -199,13 +207,11 @@ void loop() {
     message = 's';  // NO
   }
 
-  // Reset counting values
+  // Reset device counting variables
   RSSI_TH_COUNT = 0;
   RSSI_TH_COUNT_FOOTSTEP = 0;
   RSSI_TH_FLAG = false;
   RSSI_TH_FOOTSTEP_FLAG = false;
-  // DEVICE_SMALL_NUM = false;
-  // DEVICE_LARGE_NUM = false;
 
   // delete results fromBLEScan buffer to release memory
   pBLEScan->clearResults();
