@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "Hidden dependency_Teensy4.0",
+			"path": "../Hidden dependency_Teensy4.0"
+		}
+	],
+	"settings": {}
+}

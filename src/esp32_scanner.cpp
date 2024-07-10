@@ -16,11 +16,11 @@ String knownBLEAddresses[] = { "aa:bc:cc:dd:ee:ee", "54:2c:7b:87:71:a2", "72:09:
 int RSSI_THRESHOLD = -80;           //Normal detection radius
 int RSSI_THRESHOLD_FOOTSTEP = -50;  //Footstep detection radius //-62
 
-int SCAN_INTERVAL = 25;         //25
-int SCAN_INTERVAL_WINDOW = 24;  //24
+int SCAN_INTERVAL = 25;             //25
+int SCAN_INTERVAL_WINDOW = 24;      //24
 
-int RSSI_TH_COUNT = 0;           // Number of devices inside of the threshold radius
-int RSSI_TH_COUNT_FOOTSTEP = 0;  // Number of devices inside of the threshold radius (Close to the center)
+int RSSI_TH_COUNT = 0;              // Number of devices inside of the threshold radius
+int RSSI_TH_COUNT_FOOTSTEP = 0;     // Number of devices inside of the threshold radius (Close to the center)
 
 bool RSSI_TH_FLAG = false;
 bool RSSI_TH_FOOTSTEP_FLAG = false;
@@ -195,7 +195,7 @@ void loop() {
   }
   // No devices in the threshold radius
   else {
-    // send an i2c message for mode 0 == Stop
+  // send an i2c message for mode 0 == Stop
     message = 's';  // NO
   }
 
