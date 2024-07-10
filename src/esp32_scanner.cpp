@@ -13,11 +13,11 @@ String knownBLEAddresses[] = { "aa:bc:cc:dd:ee:ee", "54:2c:7b:87:71:a2", "72:09:
                                "5a:2b:f4:61:71:aa", "f2:dc:7e:bd:f1:ab", "49:36:ef:f5:9f:0c", "4f:08:07:83:c3:62", "5b:51:f2:1d:66:4d",
                                "53:11:d2:bf:fd:04", "74:be:f6:a4:81:2f", "d7:42:99:28:27:63" };
 
-int RSSI_THRESHOLD = -80;           //Normal detection radius
-int RSSI_THRESHOLD_FOOTSTEP = -50;  //Footstep detection radius //-62
+int RSSI_THRESHOLD = -80;           //Normal Bluetooth detection radius
+int RSSI_THRESHOLD_FOOTSTEP = -50;  //Footstep Bluetooth detection radius
 
-int SCAN_INTERVAL = 25;             //25
-int SCAN_INTERVAL_WINDOW = 24;      //24
+int SCAN_INTERVAL = 25;             //Scanning interval time 25
+int SCAN_INTERVAL_WINDOW = 24;      //Scanning interval time(window) 24 // Less or equal to scan interval time
 
 int RSSI_TH_COUNT = 0;              // Number of devices inside of the threshold radius
 int RSSI_TH_COUNT_FOOTSTEP = 0;     // Number of devices inside of the threshold radius (Close to the center)
