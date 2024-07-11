@@ -26,7 +26,7 @@ int SCAN_INTERVAL_WINDOW = 24;      // Scanning interval time(window) -> 24 // L
 int RSSI_TH_COUNT = 0;              // Number of devices inside of the threshold radius
 int RSSI_TH_COUNT_FOOTSTEP = 0;     // Number of devices inside of the threshold radius (Close to the center)
 
-int scanTime = 5;   // Scanning duration time 5ms
+int scanTime = 5;   // Scanning duration time -> 5ms
 BLEScan* pBLEScan;  // BLE scan objects (Array)
 
 //********** Device detection flags **********//
@@ -203,15 +203,13 @@ void loop() {
     if (DEVICE_SMALL_NUM == true) {
       // Send an i2c message for mode 2 == Footstep
       message = 'f';  // SMALL
-
     } else {
       // Send an i2c message for mode 1 == Random vibration
       message = 'r';  // LARGE
     }
-  }
-  // No devices in the threshold radius
-  else {
-  // Send an i2c message for mode 0 == Stop
+  } else {  
+    // No devices in the threshold radius
+    // Send an i2c message for mode 0 == Stop
     message = 's';  // NO
   }
 
