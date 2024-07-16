@@ -1,3 +1,14 @@
+/* 
+  Hidden dependency project
+  Copyright (c) 2024 Sangbong Lee <sangbong@me.com>
+  
+  * Bluetooth scanner for ESP32 board
+  * This code allows the esp32 board to scan Bluetooth devices nearby and transmits a command to the Teensy board through i2C.
+
+  This work is licensed under the Creative Commons Attribution 4.0 International License.
+  To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/.
+*/
+
 #include <Arduino.h>
 
 // I2c Header
