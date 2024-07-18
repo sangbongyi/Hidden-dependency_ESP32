@@ -8,7 +8,7 @@ This work is an artistic research and experiment about dependent origination. Ac
 
 We are only seeing a part of the surroundings we live through. This experienced world is composed not only of ourselves but also of the unnoticed beings that surround us. Machines cover our living spaces and communicate with each other, yet we don't perceive their existence since machines are concealed, and use different language from ours. Therefore, we consider them not worthy to pay attention until they are not working properly. This apathy makes us difficult to draw the whole picture of the moment we are experiencing.
 
-![Hidden dependency image 1](/../../../../github/docs/blob/main/assets/images/image_1.png)
+![Hidden dependency image 1](../../../github/docs/blob/main/assets/images/image_1.png?raw=true)
 
 :Exhibition, Studies of change, 30.05 - 02.06.2024 Alte pathologie, Bremen, Germany Photo: Sangbong Lee
 
