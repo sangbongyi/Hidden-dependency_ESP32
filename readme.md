@@ -1,7 +1,8 @@
-# Hidden dependency
-## Introduction
+# Hidden dependency (ESP32 Board)
 
-_Bluetooth scanner for ESP32 board. This code allows the esp32 board to scan Bluetooth devices nearby and transmits a command to the Teensy board through i2C._
+**_Bluetooth scanner for ESP32 board. This code allows the esp32 board to scan Bluetooth devices nearby and transmits a command to the Teensy board through i2C._**
+
+## Introduction
 
 This work is an artistic research and experiment about dependent origination. According to this notion, a single event or being reflects only a fragment of the whole world and time, so that we can approximate a closer picture of the complex interconnection between every entity and its dependency by reassembling pieces of the whole.
 
